@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<debugInfo>
+    <manifest filename="C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\manifest.xml"/>
+    <pcToLineNum>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerDelegate.mc" id="1" lineNum="4" parent="globals/Tuesday_Night_TImerDelegate" pc="268435460" symbol="&lt;init&gt;"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerDelegate.mc" id="2" lineNum="15" parent="globals/Tuesday_Night_TImerDelegate" pc="268435479" symbol="onMenu"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerDelegate.mc" id="2" lineNum="16" parent="globals/Tuesday_Night_TImerDelegate" pc="268435481" symbol="onMenu"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerDelegate.mc" id="2" lineNum="17" parent="globals/Tuesday_Night_TImerDelegate" pc="268435499" symbol="onMenu"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerDelegate.mc" id="3" lineNum="8" parent="globals/Tuesday_Night_TImerDelegate" pc="268435502" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerDelegate.mc" id="3" lineNum="9" parent="globals/Tuesday_Night_TImerDelegate" pc="268435504" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerDelegate.mc" id="3" lineNum="10" parent="globals/Tuesday_Night_TImerDelegate" pc="268435526" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="4" lineNum="7" parent="globals/Tuesday_Night_TImerView" pc="268435537" symbol="&lt;init&gt;"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="4" lineNum="11" parent="globals/Tuesday_Night_TImerView" pc="268435555" symbol="&lt;init&gt;"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="6" lineNum="24" parent="globals/Tuesday_Night_TImerView" pc="268435609" symbol="onLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="6" lineNum="26" parent="globals/Tuesday_Night_TImerView" pc="268435613" symbol="onLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="6" lineNum="27" parent="globals/Tuesday_Night_TImerView" pc="268435641" symbol="onLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="6" lineNum="28" parent="globals/Tuesday_Night_TImerView" pc="268435676" symbol="onLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="6" lineNum="30" parent="globals/Tuesday_Night_TImerView" pc="268435686" symbol="onLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="63" parent="globals/Tuesday_Night_TImerView" pc="268435728" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="64" parent="globals/Tuesday_Night_TImerView" pc="268435732" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="65" parent="globals/Tuesday_Night_TImerView" pc="268435739" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="67" parent="globals/Tuesday_Night_TImerView" pc="268435746" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="68" parent="globals/Tuesday_Night_TImerView" pc="268435778" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="70" parent="globals/Tuesday_Night_TImerView" pc="268435821" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="72" parent="globals/Tuesday_Night_TImerView" pc="268435855" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="73" parent="globals/Tuesday_Night_TImerView" pc="268435887" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="75" parent="globals/Tuesday_Night_TImerView" pc="268435930" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="77" parent="globals/Tuesday_Night_TImerView" pc="268435964" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="78" parent="globals/Tuesday_Night_TImerView" pc="268435990" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="79" parent="globals/Tuesday_Night_TImerView" pc="268435997" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="80" parent="globals/Tuesday_Night_TImerView" pc="268436004" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="7" lineNum="82" parent="globals/Tuesday_Night_TImerView" pc="268436025" symbol="createStringTime"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="8" lineNum="18" parent="globals/Tuesday_Night_TImerView" pc="268436037" symbol="callback"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="8" lineNum="19" parent="globals/Tuesday_Night_TImerView" pc="268436039" symbol="callback"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="8" lineNum="20" parent="globals/Tuesday_Night_TImerView" pc="268436058" symbol="callback"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="9" lineNum="85" parent="globals/Tuesday_Night_TImerView" pc="268436075" symbol="stopTimer"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="9" lineNum="86" parent="globals/Tuesday_Night_TImerView" pc="268436077" symbol="stopTimer"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="9" lineNum="87" parent="globals/Tuesday_Night_TImerView" pc="268436090" symbol="stopTimer"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="10" lineNum="13" parent="globals/Tuesday_Night_TImerView" pc="268436112" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="10" lineNum="14" parent="globals/Tuesday_Night_TImerView" pc="268436114" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="40" parent="globals/Tuesday_Night_TImerView" pc="268436133" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="41" parent="globals/Tuesday_Night_TImerView" pc="268436137" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="42" parent="globals/Tuesday_Night_TImerView" pc="268436159" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="44" parent="globals/Tuesday_Night_TImerView" pc="268436171" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="43" parent="globals/Tuesday_Night_TImerView" pc="268436171" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="45" parent="globals/Tuesday_Night_TImerView" pc="268436263" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="46" parent="globals/Tuesday_Night_TImerView" pc="268436288" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="48" parent="globals/Tuesday_Night_TImerView" pc="268436313" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="49" parent="globals/Tuesday_Night_TImerView" pc="268436326" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerView.mc" id="12" lineNum="52" parent="globals/Tuesday_Night_TImerView" pc="268436348" symbol="onUpdate"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="13" lineNum="31" parent="globals" pc="268436413" symbol="getApp"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="13" lineNum="32" parent="globals" pc="268436423" symbol="getApp"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="14" lineNum="5" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436439" symbol="&lt;init&gt;"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="15" lineNum="11" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436458" symbol="onMenuItem"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="15" lineNum="12" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436460" symbol="onMenuItem"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="15" lineNum="13" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436471" symbol="onMenuItem"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="15" lineNum="14" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436495" symbol="onMenuItem"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="15" lineNum="15" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436506" symbol="onMenuItem"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="16" lineNum="7" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436531" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerMenuDelegate.mc" id="16" lineNum="8" parent="globals/Tuesday_Night_TImerMenuDelegate" pc="268436533" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="17" lineNum="7" parent="globals/Rez" pc="268436552" symbol="&lt;init&gt;"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="18" lineNum="5" parent="globals/Tuesday_Night_TImerApp" pc="268436576" symbol="&lt;init&gt;"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="19" lineNum="12" parent="globals/Tuesday_Night_TImerApp" pc="268436595" symbol="onStart"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="20" lineNum="20" parent="globals/Tuesday_Night_TImerApp" pc="268436598" symbol="getInitialView"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="20" lineNum="21" parent="globals/Tuesday_Night_TImerApp" pc="268436602" symbol="getInitialView"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="20" lineNum="22" parent="globals/Tuesday_Night_TImerApp" pc="268436630" symbol="getInitialView"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="20" lineNum="23" parent="globals/Tuesday_Night_TImerApp" pc="268436660" symbol="getInitialView"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="21" lineNum="7" parent="globals/Tuesday_Night_TImerApp" pc="268436687" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="21" lineNum="8" parent="globals/Tuesday_Night_TImerApp" pc="268436689" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\source\\Tuesday_Night_TImerApp.mc" id="22" lineNum="16" parent="globals/Tuesday_Night_TImerApp" pc="268436708" symbol="onStop"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="23" lineNum="20" parent="globals/Rez/Layouts" pc="268436711" symbol="MainLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="23" lineNum="21" parent="globals/Rez/Layouts" pc="268436723" symbol="MainLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="23" lineNum="23" parent="globals/Rez/Layouts" pc="268436854" symbol="MainLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="23" lineNum="24" parent="globals/Rez/Layouts" pc="268436959" symbol="MainLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="23" lineNum="26" parent="globals/Rez/Layouts" pc="268436999" symbol="MainLayout"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="24" lineNum="31" parent="globals/Rez/Menus/MainMenu" pc="268437026" symbol="&lt;init&gt;"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="25" lineNum="32" parent="globals/Rez/Menus/MainMenu" pc="268437045" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="25" lineNum="33" parent="globals/Rez/Menus/MainMenu" pc="268437047" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="25" lineNum="34" parent="globals/Rez/Menus/MainMenu" pc="268437065" symbol="initialize"/>
+        <entry filename="C:\\Users\\20ela\\Projects\\Garmin\\Tueday_Night_Timer_V0\\Tuesday_Night_TImer\\bin\\gen\\006-B3290-00\\source\\Rez.mcgen" id="25" lineNum="35" parent="globals/Rez/Menus/MainMenu" pc="268437121" symbol="initialize"/>
+    </pcToLineNum>
+    <symbolTable>
+        <entry id="8388639" module="true" symbol="Graphics"/>
+        <entry id="8389346" symbol="text"/>
+        <entry id="8388632" method="true" symbol="&lt;init&gt;"/>
+        <entry id="7" module="true" symbol="globals/Rez/Menus"/>
+        <entry id="9" object="true" symbol="Tuesday_Night_TImerApp"/>
+        <entry id="24" method="true" symbol="MainLayout"/>
+        <entry id="11" object="true" symbol="Tuesday_Night_TImerMenuDelegate"/>
+        <entry field="true" id="8388611" module="true" symbol="Toybox"/>
+        <entry field="true" id="26" symbol="AppName"/>
+        <entry id="8" module="true" symbol="globals/Rez/Strings"/>
+        <entry id="8389080" method="true" symbol="onMenu"/>
+        <entry id="8388772" module="true" object="true" symbol="Fonts"/>
+        <entry id="8389345" symbol="rezId"/>
+        <entry id="10" object="true" symbol="Tuesday_Night_TImerDelegate"/>
+        <entry field="true" id="15" symbol="&lt;globals/Tuesday_Night_TImerView/&lt;&gt;_startTime&gt;"/>
+        <entry id="8388648" module="true" symbol="WatchUi"/>
+        <entry id="2" module="true" symbol="globals/Rez"/>
+        <entry field="true" id="29" symbol="prompt"/>
+        <entry field="true" id="23" symbol="id_monkey"/>
+        <entry id="8389124" method="true" symbol="onUpdate"/>
+        <entry field="true" id="8389065" symbol="locY"/>
+        <entry field="true" id="8389064" symbol="locX"/>
+        <entry id="8388771" module="true" object="true" symbol="Drawables"/>
+        <entry id="8389348" symbol="font"/>
+        <entry id="12" object="true" symbol="Tuesday_Night_TImerView"/>
+        <entry id="31" symbol="item_2"/>
+        <entry id="30" symbol="item_1"/>
+        <entry id="21" module="true" symbol="Menus"/>
+        <entry id="8389275" method="true" symbol="getApp"/>
+        <entry id="6" module="true" symbol="globals/Rez/Layouts"/>
+        <entry id="8389122" method="true" symbol="onLayout"/>
+        <entry field="true" id="8389063" symbol="identifier"/>
+        <entry id="8389349" symbol="justification"/>
+        <entry field="true" id="17" symbol="&lt;globals/Tuesday_Night_TImerView/&lt;&gt;_warnings&gt;"/>
+        <entry id="5" module="true" symbol="globals/Rez/JsonData"/>
+        <entry id="3" module="true" symbol="globals/Rez/Drawables"/>
+        <entry id="25" object="true" symbol="MainMenu"/>
+        <entry id="18" method="true" symbol="createStringTime"/>
+        <entry id="8388644" module="true" symbol="System"/>
+        <entry id="8388769" module="true" object="true" symbol="Rez"/>
+        <entry id="8388640" module="true" symbol="Lang"/>
+        <entry id="8390088" module="true" object="true" symbol="JsonData"/>
+        <entry field="true" id="14" symbol="&lt;globals/Tuesday_Night_TImerView/&lt;&gt;_count1&gt;"/>
+        <entry field="true" id="22" symbol="LauncherIcon"/>
+        <entry id="8388610" symbol="statics"/>
+        <entry id="8389123" method="true" symbol="onShow"/>
+        <entry id="19" method="true" symbol="stopTimer"/>
+        <entry id="8389350" module="true" symbol="globals"/>
+        <entry id="8388770" module="true" object="true" symbol="Strings"/>
+        <entry id="8388702" method="true" symbol="initialize"/>
+        <entry id="8389279" method="true" symbol="onStart"/>
+        <entry field="true" id="13" symbol="&lt;globals/Tuesday_Night_TImerDelegate/&lt;&gt;_view&gt;"/>
+        <entry id="8389280" method="true" symbol="getInitialView"/>
+        <entry id="8389281" method="true" symbol="onStop"/>
+        <entry id="8389109" method="true" symbol="onMenuItem"/>
+        <entry id="8389347" symbol="color"/>
+        <entry id="8388646" module="true" object="true" symbol="Timer"/>
+        <entry id="20" module="true" symbol="Layouts"/>
+        <entry id="4" module="true" symbol="globals/Rez/Fonts"/>
+        <entry id="8389125" method="true" symbol="onHide"/>
+        <entry field="true" id="16" symbol="&lt;globals/Tuesday_Night_TImerView/&lt;&gt;_timer1&gt;"/>
+        <entry id="8388635" module="true" symbol="Application"/>
+        <entry id="8388705" method="true" symbol="callback"/>
+        <entry field="true" id="28" symbol="menu_label_2"/>
+        <entry field="true" id="27" symbol="menu_label_1"/>
+    </symbolTable>
+    <localVars>
+        <entry arg="true" endPc="268435536" name="view" stackId="1" startPc="268435502"/>
+        <entry arg="true" endPc="268435727" name="dc" stackId="1" startPc="268435609"/>
+        <entry endPc="268435726" name="timer1" stackId="2" startPc="268435613"/>
+        <entry endPc="268436036" name="minuteString" stackId="1" startPc="268435732"/>
+        <entry endPc="268436036" name="secondString" stackId="2" startPc="268435732"/>
+        <entry arg="true" endPc="268436412" name="dc" stackId="1" startPc="268436133"/>
+        <entry endPc="268436411" name="string" stackId="2" startPc="268436137"/>
+        <entry arg="true" endPc="268436530" name="item" stackId="1" startPc="268436458"/>
+        <entry endPc="268436686" name="view" stackId="1" startPc="268436602"/>
+        <entry endPc="268436686" name="delegate" stackId="2" startPc="268436602"/>
+        <entry arg="true" endPc="268437025" name="dc" stackId="1" startPc="268436711"/>
+        <entry endPc="268437025" name="rez_cmp_local_text_3328906651" stackId="2" startPc="268436723"/>
+        <entry endPc="268437025" name="rez_cmp_local_bitmap_id_monkey" stackId="3" startPc="268436723"/>
+    </localVars>
+    <annotations>
+        <annotationEntry annotation="initialized" class="Drawables" module="globals/Rez" symbol="LauncherIcon"/>
+        <annotationEntry annotation="initialized" class="Strings" module="globals/Rez" symbol="menu_label_2"/>
+        <annotationEntry annotation="initialized" class="Strings" module="globals/Rez" symbol="menu_label_1"/>
+        <annotationEntry annotation="initialized" class="Strings" module="globals/Rez" symbol="prompt"/>
+        <annotationEntry annotation="initialized" class="Strings" module="globals/Rez" symbol="AppName"/>
+        <annotationEntry annotation="initialized" class="Drawables" module="globals/Rez" symbol="id_monkey"/>
+    </annotations>
+    <dataEntryOffsetMappings>
+        <dataEntry label="globals" offset="87" parentId="" symbolId="globals" type="module"/>
+        <dataEntry label="globals/Tuesday_Night_TImerDelegate" offset="174" parentId="globals" symbolId="Tuesday_Night_TImerDelegate" type="class"/>
+        <dataEntry label="globals/Tuesday_Night_TImerView" offset="237" parentId="globals" symbolId="Tuesday_Night_TImerView" type="class"/>
+        <dataEntry label="globals/Tuesday_Night_TImerMenuDelegate" offset="372" parentId="globals" symbolId="Tuesday_Night_TImerMenuDelegate" type="class"/>
+        <dataEntry label="globals/Rez" offset="427" parentId="globals" symbolId="Rez" type="module"/>
+        <dataEntry label="globals/Tuesday_Night_TImerApp" offset="506" parentId="globals" symbolId="Tuesday_Night_TImerApp" type="class"/>
+        <dataEntry label="globals/Rez/Drawables" offset="577" parentId="Rez" symbolId="Drawables" type="module"/>
+        <dataEntry label="globals/Rez/Layouts" offset="624" parentId="Rez" symbolId="Layouts" type="module"/>
+        <dataEntry label="globals/Rez/Menus" offset="663" parentId="Rez" symbolId="Menus" type="module"/>
+        <dataEntry label="globals/Rez/Fonts" offset="702" parentId="Rez" symbolId="Fonts" type="module"/>
+        <dataEntry label="globals/Rez/Strings" offset="733" parentId="Rez" symbolId="Strings" type="module"/>
+        <dataEntry label="globals/Rez/JsonData" offset="796" parentId="Rez" symbolId="JsonData" type="module"/>
+        <dataEntry label="globals/Rez/Menus/MainMenu" offset="827" parentId="Menus" symbolId="MainMenu" type="class"/>
+    </dataEntryOffsetMappings>
+    <functions>
+        <functionEntry accessMode="public" endPc="268435478" name="&lt;init&gt;" parent="Tuesday_Night_TImerDelegate" startPc="268435460">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268435501" name="onMenu" parent="Tuesday_Night_TImerDelegate" startPc="268435479">
+            <documentation>
+                <![CDATA[<div class="description"> Stop the first timer on menu event<br/> <div class="returns">Returns  true if handled, false otherwise</div><br/></div>]]>
+            </documentation>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268435536" name="initialize" parent="Tuesday_Night_TImerDelegate" startPc="268435502">
+            <param id="view"/>
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268435608" name="&lt;init&gt;" parent="Tuesday_Night_TImerView" startPc="268435537">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="onShow" parent="Tuesday_Night_TImerView">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268435727" name="onLayout" parent="Tuesday_Night_TImerView" startPc="268435609">
+            <param id="dc"/>
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436036" name="createStringTime" parent="Tuesday_Night_TImerView" startPc="268435728">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436074" name="callback" parent="Tuesday_Night_TImerView" startPc="268436037">
+            <documentation>
+                <![CDATA[<div class="description"> Callback for timer<br/></div>]]>
+            </documentation>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436111" name="stopTimer" parent="Tuesday_Night_TImerView" startPc="268436075">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436132" name="initialize" parent="Tuesday_Night_TImerView" startPc="268436112">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="onHide" parent="Tuesday_Night_TImerView">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436412" name="onUpdate" parent="Tuesday_Night_TImerView" startPc="268436133">
+            <param id="dc"/>
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436438" name="getApp" startPc="268436413">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436457" name="&lt;init&gt;" parent="Tuesday_Night_TImerMenuDelegate" startPc="268436439">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436530" name="onMenuItem" parent="Tuesday_Night_TImerMenuDelegate" startPc="268436458">
+            <param id="item"/>
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436551" name="initialize" parent="Tuesday_Night_TImerMenuDelegate" startPc="268436531">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436575" name="&lt;init&gt;" parent="Rez" startPc="268436552">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436594" name="&lt;init&gt;" parent="Tuesday_Night_TImerApp" startPc="268436576">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436597" name="onStart" parent="Tuesday_Night_TImerApp" startPc="268436595">
+            <param id="state"/>
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436686" name="getInitialView" parent="Tuesday_Night_TImerApp" startPc="268436598">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436707" name="initialize" parent="Tuesday_Night_TImerApp" startPc="268436687">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268436710" name="onStop" parent="Tuesday_Night_TImerApp" startPc="268436708">
+            <param id="state"/>
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="&lt;init&gt;" parent="Drawables">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="&lt;init&gt;" parent="Layouts">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="&lt;init&gt;" parent="Menus">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="&lt;init&gt;" parent="Fonts">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="&lt;init&gt;" parent="Strings">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" name="&lt;init&gt;" parent="JsonData">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268437025" name="MainLayout" parent="Layouts" startPc="268436711">
+            <param id="dc"/>
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268437044" name="&lt;init&gt;" parent="MainMenu" startPc="268437026">
+            <documentation/>
+        </functionEntry>
+        <functionEntry accessMode="public" endPc="268437177" name="initialize" parent="MainMenu" startPc="268437045">
+            <documentation/>
+        </functionEntry>
+    </functions>
+</debugInfo>

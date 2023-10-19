@@ -1,0 +1,49 @@
+[ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 1; ]
+import Toybox.Lang;
+[ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 2; ]
+import Toybox.WatchUi;
+[ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 4; ]
+class Tuesday_Night_TImerDelegate extends WatchUi.BehaviorDelegate{
+    [ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 4; ]
+    <init> {
+    }
+    [ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 4; ]
+    static
+    <init> {
+    }
+    [ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 6; @position = 16; ]
+    private
+    var _view as Tuesday_Night_TImerView;
+    [ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 8; ]
+    public
+    function initialize(view as Tuesday_Night_TImerView) as Void {
+C_Users_20ela_Projects_Garmin_Tueday_Night_Timer_V0_Tuesday_Night_TImer_source_Tuesday_Night_TImerDelegate_mc_8_64_start:
+[ "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc" 9 8 ]
+        %tmp.1 = getm $.Toybox.WatchUi;
+        %tmp.2 = getv %tmp.1 :BehaviorDelegate;
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+[ "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc" 10 8 ]
+        %tmp.5 = lgetv %view;
+        putv self :_view %tmp.5;
+C_Users_20ela_Projects_Garmin_Tueday_Night_Timer_V0_Tuesday_Night_TImer_source_Tuesday_Night_TImerDelegate_mc_8_64_stop:
+    }
+    //! Stop the first timer on menu event
+    //! @return true if handled, false otherwise
+    [ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 15; ]
+    public
+    function onMenu() as Boolean {
+C_Users_20ela_Projects_Garmin_Tueday_Night_Timer_V0_Tuesday_Night_TImer_source_Tuesday_Night_TImerDelegate_mc_15_40_start:
+[ "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc" 16 8 ]
+        %tmp.2 = getv ? :_view;
+        %tmp.3 = getv function %tmp.2 :stopTimer;
+        invoke %tmp.2 %tmp.3();
+[ "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc" 17 8 ]
+        %tmp.4 = true;
+        ret %tmp.4;
+C_Users_20ela_Projects_Garmin_Tueday_Night_Timer_V0_Tuesday_Night_TImer_source_Tuesday_Night_TImerDelegate_mc_15_40_stop:
+    }
+}
+[ @file = "C:\Users\20ela\Projects\Garmin\Tueday_Night_Timer_V0\Tuesday_Night_TImer\source\Tuesday_Night_TImerDelegate.mc"; @line = 1; ]
+<init> {
+}
