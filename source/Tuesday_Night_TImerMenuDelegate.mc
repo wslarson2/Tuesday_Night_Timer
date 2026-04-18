@@ -1,19 +1,19 @@
 import Toybox.Lang;
-import Toybox.System;
 import Toybox.WatchUi;
 
-class Tuesday_Night_TImerMenuDelegate extends WatchUi.MenuInputDelegate {
+class Tuesday_Night_TimerMenuDelegate extends WatchUi.Menu2InputDelegate {
 
-    function initialize() {
-        MenuInputDelegate.initialize();
+    //! Untyped: Monkey C rejects typed Method vs method(:setStartTime) (Number) -> Void at call site.
+    private var _callback;
+
+    function initialize(callback) {
+        Menu2InputDelegate.initialize();
+        _callback = callback;
     }
 
-    function onMenuItem(item as Symbol) as Void {
-        if (item == :item_1) {
-            System.println("item 1");
-        } else if (item == :item_2) {
-            System.println("item 2");
-        }
+    function onSelect(item as WatchUi.MenuItem) as Void {
+        _callback.invoke(item.getId() as Number);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 
 }

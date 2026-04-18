@@ -2,7 +2,7 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class Tuesday_Night_TImerApp extends Application.AppBase {
+class Tuesday_Night_TimerApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
@@ -17,17 +17,10 @@ class Tuesday_Night_TImerApp extends Application.AppBase {
     }
 
     // Return the initial view of your application here
-    function getInitialView() as Array<Views or InputDelegates>? {
-    var view = new $.Tuesday_Night_TImerView();
-        var delegate = new $.Tuesday_Night_TImerDelegate(view);
-        return [view, delegate] as Array<Views or InputDelegates>;
-
-
-        //return [ new Tuesday_Night_TImerView(), new Tuesday_Night_TImerDelegate() ] as Array<Views or InputDelegates>;
+    function getInitialView() {
+        var view = new $.Tuesday_Night_TimerView();
+        var delegate = new $.Tuesday_Night_TimerDelegate(view);
+        return [view, delegate];
     }
 
-}
-
-function getApp() as Tuesday_Night_TImerApp {
-    return Application.getApp() as Tuesday_Night_TImerApp;
 }
