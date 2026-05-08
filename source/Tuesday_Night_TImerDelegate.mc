@@ -3,10 +3,22 @@ import Toybox.System;
 import Toybox.Timer;
 import Toybox.WatchUi;
 
-//! BehaviorDelegate also receives low-level key press/release (InputDelegate).
-//! KeyPressType in CIQ only exposes DOWN / UP / ACTION — there is no PRESS_TYPE_HOLD
-//! on KeyEvent in SDK 6.2.x. Gun sync and stop-confirm therefore use a short timer
-//! from physical KEY_DOWN / KEY_ENTER press so actions fire mid-hold.
+//! Input handler: maps physical watch buttons to race control and stopwatch actions.
+//!
+//! KEY_ENTER (center button):
+//!   - In sync window (long-hold): show green overlay and snap-to-horn on release
+//!   - While running (short press/release): cycle stopwatch (start/pause/reset)
+//!
+//! KEY_DOWN (down button):
+//!   - Double-press while running: emergency exit (race ends)
+//!
+//! CIQ Challenge: SDK 6.2.x only exposes KeyEvent.DOWN / UP / ACTION, no PRESS_TYPE_HOLD.
+//! To detect a sustained hold for sync mode, we use a 700ms timer from KEY_DOWN.
+//!
+//! CIQ SDK Quirk: onSelect() fires between physical KEY_ENTER down and up on the same gesture,
+//! in addition to the onKeyReleased callback. We must suppress duplicate onSelect calls to avoid
+//! double-cycling the stopwatch (once in onKeyReleased, once in onSelect).
+//! Solution: set _suppressSelectUntilMs and check elapsed time in onSelect().
 class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
 
     private var _view as Tuesday_Night_TimerView;
@@ -43,6 +55,9 @@ class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
     // -------------------------------------------------------------------------
 
     public function onKeyPressed(keyEvent as WatchUi.KeyEvent) as Boolean {
+        if (_view.hasActiveSession()) {
+            return true;  // swallow all low-level key events during racing
+        }
         var key = keyEvent.getKey();
         if (key == WatchUi.KEY_ENTER) {
             if (_view.isRunning() and _view.isInSyncWindow()) {
@@ -73,7 +88,7 @@ class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
                 var now = System.getTimer();
                 if (now - _lastDownPressMs <= DOUBLE_TAP_MS) {
                     _lastDownPressMs = 0;
-                    _showStopConfirmation();
+                    _view.exitAppNow();
                 } else {
                     _lastDownPressMs = now;
                 }
@@ -97,6 +112,11 @@ class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
                 if (_syncPending) {
                     _cancelHoldTimer();
                     _syncPending = false;
+                    //! Short press in sync window: still cycle stopwatch (long hold enters green sync).
+                    if (_view.isRunning()) {
+                        _suppressSelectUntilMs = System.getTimer() + SW_SUPPRESS_SELECT_MS;
+                        _view.cycleStopwatch();
+                    }
                     return true;
                 }
             }
@@ -161,6 +181,10 @@ class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
     // -------------------------------------------------------------------------
 
     public function onSelect() as Boolean {
+        if (_view.hasActiveSession()) {
+            _showFinishRaceConfirmation();
+            return true;
+        }
         if (_syncActive) {
             _syncActive = false;
             _view.finishSyncHoldRelease();
@@ -185,6 +209,10 @@ class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
     }
 
     public function onNextPage() as Boolean {
+        if (_view.hasActiveSession()) {
+            _view.cycleRacingPage();
+            return true;
+        }
         if (_syncActive or _syncPending) {
             var wasActive = _syncActive;
             _cancelHoldTimer();
@@ -214,6 +242,10 @@ class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
         _resetSwEnterTracking();
+        if (_view.hasActiveSession()) {
+            _showFinishRaceConfirmation();
+            return true;
+        }
         return _view.handleBack();
     }
 
@@ -253,10 +285,18 @@ class Tuesday_Night_TimerDelegate extends WatchUi.BehaviorDelegate {
     }
 
     private function _showStopConfirmation() as Void {
-        var menu = new WatchUi.Menu2({:title => "Stop Timer?"});
+        var menu = new WatchUi.Menu2({:title => "Exit App?"});
         menu.addItem(new WatchUi.MenuItem("No - Continue", null, :no, null));
-        menu.addItem(new WatchUi.MenuItem("Yes - Stop", null, :yes, null));
+        menu.addItem(new WatchUi.MenuItem("Yes - Exit", null, :yes, null));
         WatchUi.pushView(menu, new Tuesday_Night_TimerConfirmDelegate(_view), WatchUi.SLIDE_UP);
+    }
+
+    private function _showFinishRaceConfirmation() as Void {
+        var menu = new WatchUi.Menu2({:title => "Finish Race?"});
+        menu.addItem(new WatchUi.MenuItem("Save & Exit",  null, :save,    null));
+        menu.addItem(new WatchUi.MenuItem("Keep Racing",  null, :keep,    null));
+        menu.addItem(new WatchUi.MenuItem("Discard",      null, :discard, null));
+        WatchUi.pushView(menu, new Tuesday_Night_TimerSaveDelegate(_view), WatchUi.SLIDE_UP);
     }
 
 }

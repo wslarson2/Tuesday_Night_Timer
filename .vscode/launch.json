@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run on fenix7",
+            "name": "Run on fenix6",
             "request": "launch",
             "type": "monkeyc",
-            "device": "fenix7",
+            "device": "fenix6",
             "jungle": "${workspaceFolder}/monkey.jungle",
             "simulatorShowFullOutput": true
         }

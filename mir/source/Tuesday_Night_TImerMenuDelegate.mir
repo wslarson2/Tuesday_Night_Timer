@@ -1,0 +1,65 @@
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 1; @symbol_importdef<0> = [Toybox,1,7,13]; @symbol_importdef<1> = [Lang,1,14,18]; ]
+import Toybox.Lang;
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 2; @symbol_importdef<0> = [Toybox,2,7,13]; @symbol_importdef<1> = [WatchUi,2,14,21]; ]
+import Toybox.WatchUi;
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 4; @symbol_classdef = [Tuesday_Night_TimerMenuDelegate,4,6,37]; @symbol_extends<0> = [WatchUi,4,46,53]; @symbol_extends<1> = [Menu2InputDelegate,4,54,72]; ]
+class Tuesday_Night_TimerMenuDelegate extends WatchUi.Menu2InputDelegate {
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 4; ]
+    <init> {
+    }
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 4; ]
+    static
+    <init> {
+    }
+    //! Untyped: Monkey C rejects typed Method vs method(:setStartTime) (Number) -> Void at call site.
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 7; @position = 16; @symbol_vardef = [_callback,7,16,25]; ]
+    private
+    var _callback;
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 9; @symbol_functiondef = [initialize,9,13,23]; @symbol_param<0> = [callback,9,24,32]; ]
+    function initialize(callback) as Void {
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerMenuDelegate_mc_9_34_12_4_start:
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc" 10 8 ]
+        symbol [ Menu2InputDelegate %tmp.2 10 8 26 ];
+        %tmp.2 = getv ? :Menu2InputDelegate;
+        symbol [ initialize %tmp.3 10 27 37 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc" 11 8 ]
+        %tmp.4 = lgetv %callback;
+        symbol [ callback %tmp.4 11 20 28 ];
+        symbol [ _callback ? 11 8 17 ];
+        putv self :_callback %tmp.4;
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerMenuDelegate_mc_9_34_12_4_stop:
+    }
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 14; @symbol_functiondef = [onSelect,14,13,21]; @symbol_param<0> = [item,14,22,26]; @symbol_param<0>_type<0> = [WatchUi,14,30,37]; @symbol_param<0>_type<1> = [MenuItem,14,38,46]; ]
+    function onSelect(item as WatchUi.MenuItem) as Void {
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerMenuDelegate_mc_14_56_17_4_start:
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc" 15 8 ]
+        symbol [ _callback %tmp.2 15 8 17 ];
+        %tmp.2 = getv ? :_callback;
+        symbol [ invoke %tmp.3 15 18 24 ];
+        %tmp.3 = getv function %tmp.2 :invoke;
+        %tmp.4 = lgetv %item;
+        symbol [ item %tmp.4 15 25 29 ];
+        symbol [ getId %tmp.5 15 30 35 ];
+        %tmp.5 = getv function %tmp.4 :getId;
+        %tmp.6 = invoke %tmp.4 %tmp.5();
+        %tmp.7 = as %tmp.6 Number;
+        symbol [ Number %tmp.7 15 41 47 ];
+        invoke %tmp.2 %tmp.3(%tmp.7);
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc" 16 8 ]
+        symbol [ WatchUi %tmp.8 16 8 15 ];
+        %tmp.8 = getm $.Toybox.WatchUi;
+        symbol [ popView %tmp.9 16 16 23 ];
+        %tmp.9 = getv function %tmp.8 :popView;
+        symbol [ WatchUi %tmp.10 16 24 31 ];
+        %tmp.10 = getm $.Toybox.WatchUi;
+        symbol [ SLIDE_DOWN %tmp.11 16 32 42 ];
+        %tmp.11 = getv %tmp.10 :SLIDE_DOWN;
+        invoke %tmp.8 %tmp.9(%tmp.11);
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerMenuDelegate_mc_14_56_17_4_stop:
+    }
+}
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerMenuDelegate.mc"; @line = 1; ]
+<init> {
+}

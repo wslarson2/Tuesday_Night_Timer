@@ -1,0 +1,76 @@
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 1; @symbol_importdef<0> = [Toybox,1,7,13]; @symbol_importdef<1> = [Application,1,14,25]; ]
+import Toybox.Application;
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 2; @symbol_importdef<0> = [Toybox,2,7,13]; @symbol_importdef<1> = [Lang,2,14,18]; ]
+import Toybox.Lang;
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 3; @symbol_importdef<0> = [Toybox,3,7,13]; @symbol_importdef<1> = [WatchUi,3,14,21]; ]
+import Toybox.WatchUi;
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 5; @symbol_classdef = [Tuesday_Night_TimerApp,5,6,28]; @symbol_extends<0> = [Application,5,37,48]; @symbol_extends<1> = [AppBase,5,49,56]; ]
+class Tuesday_Night_TimerApp extends Application.AppBase {
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 5; ]
+    <init> {
+    }
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 5; ]
+    static
+    <init> {
+    }
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 7; @symbol_functiondef = [initialize,7,13,23]; ]
+    function initialize() as Void {
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_7_26_9_4_start:
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc" 8 8 ]
+        symbol [ AppBase %tmp.2 8 8 15 ];
+        %tmp.2 = getv ? :AppBase;
+        symbol [ initialize %tmp.3 8 16 26 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_7_26_9_4_stop:
+    }
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 12; @symbol_functiondef = [onStart,12,13,20]; @symbol_param<0> = [state,12,21,26]; @symbol_param<0>_type<0> = [Dictionary,12,30,40]; ]
+    function onStart(state as Dictionary or Null) as Void {
+    }
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 16; @symbol_functiondef = [onStop,16,13,19]; @symbol_param<0> = [state,16,20,25]; @symbol_param<0>_type<0> = [Dictionary,16,29,39]; ]
+    function onStop(state as Dictionary or Null) as Void {
+    }
+    [ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 20; @symbol_functiondef = [getInitialView,20,13,27]; ]
+    function getInitialView() {
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_20_30_24_4_start:
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc" 21 8 ]
+        [ "C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_20_30_24_4_start" "C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_20_30_24_4_stop" ]
+        %view.1 = local;
+        symbol [ view %view.1 21 12 16 ];
+        symbol [ $ %tmp.4 21 23 24 ];
+        %tmp.4 = getm $;
+        symbol [ Tuesday_Night_TimerView %tmp.5 21 25 48 ];
+        %tmp.5 = getv %tmp.4 :Tuesday_Night_TimerView;
+        %tmp.1 = newc %tmp.5 ();
+        lputv %view.1 %tmp.1;
+        symbol [ view %view.1 21 12 16 ];
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc" 22 8 ]
+        [ "C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_20_30_24_4_start" "C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_20_30_24_4_stop" ]
+        %delegate.2 = local;
+        symbol [ delegate %delegate.2 22 12 20 ];
+        symbol [ $ %tmp.9 22 27 28 ];
+        %tmp.9 = getm $;
+        symbol [ Tuesday_Night_TimerDelegate %tmp.10 22 29 56 ];
+        %tmp.10 = getv %tmp.9 :Tuesday_Night_TimerDelegate;
+        %tmp.11 = lgetv %view.1;
+        symbol [ view %tmp.11 22 57 61 ];
+        %tmp.6 = newc %tmp.10 (%tmp.11);
+        lputv %delegate.2 %tmp.6;
+        symbol [ delegate %delegate.2 22 12 20 ];
+[ "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc" 23 8 ]
+        %tmp.12 = newa 2;
+        %tmp.13 = lgetv %view.1;
+        symbol [ view %tmp.13 23 16 20 ];
+        %tmp.14 = dup %tmp.12;
+        %tmp.15 = aputv %tmp.14 0 %tmp.13;
+        %tmp.16 = lgetv %delegate.2;
+        symbol [ delegate %tmp.16 23 22 30 ];
+        %tmp.17 = dup %tmp.15;
+        %tmp.18 = aputv %tmp.17 1 %tmp.16;
+        ret %tmp.18;
+C__Users_20ela_Projects_Tuesday_Night_Timer_source_Tuesday_Night_TImerApp_mc_20_30_24_4_stop:
+    }
+}
+[ @file = "C:\Users\20ela\Projects\Tuesday_Night_Timer\source\Tuesday_Night_TImerApp.mc"; @line = 1; ]
+<init> {
+}

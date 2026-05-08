@@ -1,76 +1,81 @@
-import Toybox.Attention;
+import Toybox.Activity;
 import Toybox.Graphics;
 import Toybox.Lang;
+import Toybox.Math;
 import Toybox.System;
 import Toybox.Timer;
 import Toybox.WatchUi;
 
+//! Main view: orchestrates the race engine, stopwatch, and activity manager.
+//! Owns all drawing logic and lifecycle management (onShow, onHide, onUpdate).
 class Tuesday_Night_TimerView extends WatchUi.View {
-    private var _timer1 as Timer.Timer?;
-    //! While RUNNING, wall-clock elapsed seconds = (System.getTimer() - _raceAnchorMs) / 1000; _count1 mirrors that for FINISHED/sync.
-    private var _count1 as Number = 0;
-    private var _raceAnchorMs as Number = 0;
-    //! Last race elapsed second (0.._startTime) we already ran triggerHaptics for; see processRaceWallSeconds().
-    private var _lastFiredRaceElapsed as Number = 0;
 
-    static const STATE_READY    = 0;
-    static const STATE_RUNNING  = 1;
-    static const STATE_FINISHED = 2;
+    private var _raceEngine     as RaceEngine;
+    private var _stopwatch      as Stopwatch;
+    private var _activityMgr    as ActivityManager;
 
-    //! Stopwatch: short SELECT while race runs cycles start → stop → reset.
-    static const SW_IDLE    = 0;
-    static const SW_RUNNING = 1;
-    static const SW_PAUSED  = 2;
+    //! Main race timer callback (1 second).
+    private var _raceTimer      as Timer.Timer?;
 
-    private var _state     as Number  = STATE_READY;
-    private var _startTime as Number  = 300;
-    private var _syncMode  as Boolean = false;
-    //! Race elapsed seconds (wall) when start key went down in sync window; release snaps from this instant only.
-    private var _syncPressCount as Number  = 0;
+    //! Idle timeout: auto-exit app after 5 hours (18000 seconds) of no user interaction.
+    private var _idleTimer      as Timer.Timer?               = null;
+    private var _lastActivityMs as Number                     = 0;
+    private static const IDLE_TIMEOUT_MS = 5 * 60 * 60 * 1000;  // 5 hours
 
-    private var _swState         as Number = SW_IDLE;
-    private var _swTimer         as Timer.Timer?;
-    private var _swElapsedMs     as Number = 0;
-    private var _swSegmentStartMs as Number = 0;
-
-    //! Ignore duplicate cycleStopwatch within this window (select + key release same gesture).
-    private var _swLastCycleMs as Number = 0;
-    private const SW_CYCLE_DEBOUNCE_MS = 45;
-
-    //! Major horns at these whole-minute marks of remaining time (5–4–1); also drives 10 s sync windows and red digits.
-    private var _scheduleHornMins as Array<Number> = [5, 4, 1] as Array<Number>;
-    //! Short haptic ticks in the last seconds before 0:00 (0 is start gun, handled separately).
-    private var _scheduleFinalTicks as Array<Number> = [10, 5, 3, 2, 1] as Array<Number>;
+    //! Racing screen: toggles between COG and elapsed-time display (onNextPage).
+    private var _racingPage     as Number = 0;
 
     function initialize() {
         View.initialize();
+        _raceEngine = new RaceEngine(method(:_onStateChange));
+        _stopwatch = new Stopwatch(method(:_onStateChange));
+        _activityMgr = new ActivityManager(method(:_onStateChange));
     }
 
     function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.MainLayout(dc));
     }
 
-    //! When returning from another screen or after the OS paused us, catch up wall-clock seconds and replay missed haptics.
+    //! Called when returning from another screen or after OS paused us.
+    //! Catch up wall-clock and replay any missed haptics.
     function onShow() as Void {
-        if (_state == STATE_RUNNING) {
-            if (processRaceWallSeconds()) {
+        _resetIdleTimeout();
+        if (_raceEngine.getState() == RaceEngine.STATE_RUNNING) {
+            if (_raceEngine.processWallClockSeconds()) {
+                // Race ended during suspension
+                if (_activityMgr.hasSession()) {
+                    _startRecIndicatorTimer();
+                }
                 return;
             }
-            if (_swState == SW_RUNNING) {
-                startStopwatchUiTimer();
+            if (_stopwatch.isRunning()) {
+                _stopwatch._onUiTick();
             }
+        }
+        if (_raceEngine.getState() == RaceEngine.STATE_FINISHED and _activityMgr.hasSession()) {
+            _startRecIndicatorTimer();
         }
         WatchUi.requestUpdate();
     }
 
-    //! Stops only the 10 Hz stopwatch redraw ticker. Race countdown uses wall time + 1 s callback and keeps running under Menu2.
+    //! Stops the UI timers. Race countdown keeps running under Menu2.
     function onHide() as Void {
-        stopStopwatchUiTimer();
+        if (_stopwatch.isRunning()) {
+            _stopwatch._onUiTick();  // Ensure final redraw
+        }
+        if (_idleTimer != null) {
+            _idleTimer.stop();
+            _idleTimer = null;
+        }
     }
 
-    //! Called by the 1-second timer — advances haptics from wall clock (may batch if we were away).
-    public function callback() as Void {
-        if (processRaceWallSeconds()) {
+    //! Called by the 1-second race timer.
+    public function _onRaceTimerTick() as Void {
+        if (_raceEngine.processWallClockSeconds()) {
+            // Race ended
+            if (_activityMgr.hasSession()) {
+                _startRecIndicatorTimer();
+            }
             return;
         }
         WatchUi.requestUpdate();
@@ -79,120 +84,184 @@ class Tuesday_Night_TimerView extends WatchUi.View {
     function onUpdate(dc as Dc) as Void {
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
-        if (_state == STATE_READY) {
-            drawReadyScreen(dc);
-        } else if (_state == STATE_RUNNING) {
-            drawRunningScreen(dc);
-        } else {
-            drawFinishedScreen(dc);
+
+        if (_activityMgr.hasSession()) {
+            _drawRacingScreen(dc);
+            return;
         }
-        drawStopwatch(dc);
+
+        var state = _raceEngine.getState();
+        if (state == RaceEngine.STATE_READY) {
+            _drawReadyScreen(dc);
+        } else if (state == RaceEngine.STATE_RUNNING) {
+            _drawRunningScreen(dc);
+        } else {
+            _drawFinishedScreen(dc);
+        }
+        _drawStopwatch(dc);
     }
 
-    //! Countdown + clip region top edge → divider; ~10% of face below old 50% line (more room for countdown).
-    private function topHalfHeight(dc as Dc) as Number {
+    // =========================================================================
+    // Drawing helpers
+    // =========================================================================
+
+    private function _topHalfHeight(dc as Dc) as Number {
         return dc.getHeight() / 2 + dc.getHeight() / 10;
     }
 
-    private function topHalfCenterY(dc as Dc) as Number {
-        return topHalfHeight(dc) / 2;
+    private function _topHalfCenterY(dc as Dc) as Number {
+        return _topHalfHeight(dc) / 2;
     }
 
-    //! Shift countdown digits upward within the top region.
-    private function countdownDrawY(dc as Dc) as Number {
-        return topHalfCenterY(dc) - dc.getHeight() / 14;
+    private function _countdownDrawY(dc as Dc) as Number {
+        return _topHalfCenterY(dc) - dc.getHeight() / 14;
     }
 
-    private function bottomHalfCenterY(dc as Dc) as Number {
-        var th = topHalfHeight(dc);
+    private function _bottomHalfCenterY(dc as Dc) as Number {
+        var th = _topHalfHeight(dc);
         return th + (dc.getHeight() - th) / 2;
     }
 
-    private function clipTopHalf(dc as Dc) as Void {
-        dc.setClip(0, 0, dc.getWidth(), topHalfHeight(dc));
+    private function _clipTopHalf(dc as Dc) as Void {
+        dc.setClip(0, 0, dc.getWidth(), _topHalfHeight(dc));
     }
 
-    private function clipFull(dc as Dc) as Void {
+    private function _clipBottomHalf(dc as Dc) as Void {
+        var th = _topHalfHeight(dc);
+        dc.setClip(0, th, dc.getWidth(), dc.getHeight() - th);
+    }
+
+    private function _clipFull(dc as Dc) as Void {
         dc.setClip(0, 0, dc.getWidth(), dc.getHeight());
     }
 
-    private function drawReadyScreen(dc as Dc) as Void {
+    private function _drawReadyScreen(dc as Dc) as Void {
         var cx = dc.getWidth() / 2;
-        var ty = countdownDrawY(dc);
-        clipTopHalf(dc);
+        var ty = _countdownDrawY(dc);
+        _clipTopHalf(dc);
         dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, ty, Graphics.FONT_NUMBER_THAI_HOT, formatTime(_startTime), Graphics.TEXT_JUSTIFY_CENTER);
-        clipFull(dc);
+        dc.drawText(cx, ty, Graphics.FONT_NUMBER_THAI_HOT, _formatTime(_raceEngine.getStartTimeSec()), Graphics.TEXT_JUSTIFY_CENTER);
+        _clipFull(dc);
     }
 
-    private function drawRunningScreen(dc as Dc) as Void {
-        var remaining = raceRemaining();
+    private function _drawRunningScreen(dc as Dc) as Void {
+        var remaining = _raceEngine.raceRemaining();
         var string = "";
-        var inWarnDigits = (_hornAppliesToWholeMinute(remaining / 60) and (remaining % 60) <= 10) or remaining <= 10;
+        var inWarnDigits = (_isScheduledHornMinute(remaining / 60) and (remaining % 60) <= 10) or remaining <= 10;
         if (inWarnDigits) {
             string = (remaining % 60).toString();
         } else {
-            string = formatTime(remaining);
+            string = _formatTime(remaining);
         }
-        clipTopHalf(dc);
-        if (_syncMode) {
+        _clipTopHalf(dc);
+        if (_raceEngine.isInSyncMode()) {
             dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
         } else if (inWarnDigits) {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         } else {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         }
-        dc.drawText(dc.getWidth() / 2, countdownDrawY(dc), Graphics.FONT_NUMBER_THAI_HOT, string, Graphics.TEXT_JUSTIFY_CENTER);
-        clipFull(dc);
+        dc.drawText(dc.getWidth() / 2, _countdownDrawY(dc), Graphics.FONT_NUMBER_THAI_HOT, string, Graphics.TEXT_JUSTIFY_CENTER);
+        _clipFull(dc);
     }
 
-    private function drawFinishedScreen(dc as Dc) as Void {
+    private function _drawFinishedScreen(dc as Dc) as Void {
         var cx = dc.getWidth() / 2;
-        var ty = countdownDrawY(dc);
-        clipTopHalf(dc);
+        var ty = _countdownDrawY(dc);
+        _clipTopHalf(dc);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(cx, ty, Graphics.FONT_NUMBER_THAI_HOT, "00:00", Graphics.TEXT_JUSTIFY_CENTER);
-        clipFull(dc);
-    }
-
-    private function stopwatchElapsedMs() as Number {
-        if (_swState == SW_RUNNING) {
-            return _swElapsedMs + (System.getTimer() - _swSegmentStartMs);
+        if (_activityMgr.hasSession()) {
+            var dotY = ty + dc.getFontHeight(Graphics.FONT_NUMBER_THAI_HOT) / 2 + 4;
+            var dotX = cx - 20;
+            var dotR = 5;
+            dc.setColor(_activityMgr.isIndicatorOn() ? Graphics.COLOR_RED : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.fillCircle(dotX, dotY, dotR);
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(dotX + dotR + 4, dotY - dotR, Graphics.FONT_XTINY, "REC", Graphics.TEXT_JUSTIFY_LEFT);
         }
-        return _swElapsedMs;
+        _clipFull(dc);
     }
 
-    private function stopwatchCentis() as Number {
-        return stopwatchElapsedMs() / 10;
-    }
-
-    private function formatStopwatch(totalCs as Number) as String {
-        var cs = totalCs % 100;
-        var totalSec = totalCs / 100;
-        var s = totalSec % 60;
-        var m = totalSec / 60;
-        var mStr = m.toString();
-        var sStr = s < 10 ? "0" + s.toString() : s.toString();
-        var csStr = cs < 10 ? "0" + cs.toString() : cs.toString();
-        return mStr + ":" + sStr + ":" + csStr;
-    }
-
-    private function clipBottomHalf(dc as Dc) as Void {
-        var th = topHalfHeight(dc);
-        dc.setClip(0, th, dc.getWidth(), dc.getHeight() - th);
-    }
-
-    private function drawStopwatch(dc as Dc) as Void {
+    private function _drawStopwatch(dc as Dc) as Void {
         var cx = dc.getWidth() / 2;
-        //! Numeric time sits higher in the bottom half (label removed).
-        var timeY = bottomHalfCenterY(dc) - 36;
-        clipBottomHalf(dc);
+        var timeY = _bottomHalfCenterY(dc) - 36;
+        _clipBottomHalf(dc);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, timeY, Graphics.FONT_NUMBER_MEDIUM, formatStopwatch(stopwatchCentis()), Graphics.TEXT_JUSTIFY_CENTER);
-        clipFull(dc);
+        dc.drawText(cx, timeY, Graphics.FONT_NUMBER_MEDIUM, _stopwatch.formatDisplay(), Graphics.TEXT_JUSTIFY_CENTER);
+        _clipFull(dc);
     }
 
-    private function formatTime(seconds as Number) as String {
+    private function _drawRacingScreen(dc as Dc) as Void {
+        var cx = dc.getWidth() / 2;
+        var h  = dc.getHeight();
+        dc.clearClip();
+
+        var info = Activity.getActivityInfo();
+
+        // SOG — large number, top quarter
+        var sogStr = "--.-";
+        if (info != null && info.currentSpeed != null) {
+            var kts = (info.currentSpeed as Float) * 1.94384f;
+            sogStr = kts.format("%.1f");
+        }
+        var sogFontH = dc.getFontHeight(Graphics.FONT_NUMBER_THAI_HOT);
+        var sogY = h / 10;
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, sogY, Graphics.FONT_NUMBER_THAI_HOT, sogStr, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, sogY + sogFontH, Graphics.FONT_XTINY, "kt", Graphics.TEXT_JUSTIFY_CENTER);
+
+        // COG string
+        var cogStr = "---°";
+        if (info != null && info.currentHeading != null) {
+            var deg = ((info.currentHeading as Float) * (180.0f / Math.PI)).toNumber();
+            if (deg < 0) { deg += 360; }
+            cogStr = deg.toString() + "° " + _headingToCompass(deg);
+        }
+
+        // Elapsed string
+        var elStr = "--:--";
+        if (info != null && info.timerTime != null) {
+            var ts = (info.timerTime as Number) / 1000;
+            var em = ts / 60;
+            var es = ts % 60;
+            elStr = em.toString() + ":" + (es < 10 ? "0" : "") + es.toString();
+        }
+
+        // Primary field (COG or elapsed based on page), secondary below
+        var primaryStr  = _racingPage == 0 ? cogStr  : elStr;
+        var primaryLabel= _racingPage == 0 ? "COG"   : "ELAPSED";
+        var secondaryStr  = _racingPage == 0 ? elStr   : cogStr;
+        var secondaryLabel= _racingPage == 0 ? "ELAPSED": "COG";
+
+        var primaryY = sogY + sogFontH + dc.getFontHeight(Graphics.FONT_XTINY) + h / 12;
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, primaryY, Graphics.FONT_XTINY, primaryLabel, Graphics.TEXT_JUSTIFY_CENTER);
+        var primaryValY = primaryY + dc.getFontHeight(Graphics.FONT_XTINY) + 2;
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, primaryValY, Graphics.FONT_LARGE, primaryStr, Graphics.TEXT_JUSTIFY_CENTER);
+
+        var secondaryY = primaryValY + dc.getFontHeight(Graphics.FONT_LARGE) + h / 18;
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, secondaryY, Graphics.FONT_XTINY, secondaryLabel, Graphics.TEXT_JUSTIFY_CENTER);
+        var secondaryValY = secondaryY + dc.getFontHeight(Graphics.FONT_XTINY) + 2;
+        dc.drawText(cx, secondaryValY, Graphics.FONT_MEDIUM, secondaryStr, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // REC dot — bottom
+        var dotY = h - h / 10;
+        dc.setColor(_activityMgr.isIndicatorOn() ? Graphics.COLOR_RED : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.fillCircle(cx - 16, dotY, 5);
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx - 8, dotY - 8, Graphics.FONT_XTINY, "REC", Graphics.TEXT_JUSTIFY_LEFT);
+    }
+
+    private function _headingToCompass(deg as Number) as String {
+        var pts = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"] as Array<String>;
+        return pts[((deg + 11) / 22) % 16];
+    }
+
+    private function _formatTime(seconds as Number) as String {
         var mins = seconds / 60;
         var secs = seconds % 60;
         var mStr = mins < 10 ? "0" + mins.toString() : mins.toString();
@@ -200,352 +269,209 @@ class Tuesday_Night_TimerView extends WatchUi.View {
         return mStr + ":" + sStr;
     }
 
-    //! Wall-clock seconds since race start (only meaningful while STATE_RUNNING).
-    private function raceElapsedSec() as Number {
-        if (_state != STATE_RUNNING) {
-            return _count1;
-        }
-        var dt = System.getTimer() - _raceAnchorMs;
-        if (dt < 0) {
-            dt = 0;
-        }
-        var e = dt / 1000;
-        if (e > _startTime) {
-            e = _startTime;
-        }
-        return e;
-    }
-
-    private function raceRemaining() as Number {
-        return _startTime - raceElapsedSec();
-    }
-
-    //! Advances haptics for every whole second the wall clock passed since last fire; ends race at 0:00.
-    //! CIQ cannot vibrate while our process is fully suspended; onShow + this loop replays missed seconds when possible.
-    private function processRaceWallSeconds() as Boolean {
-        if (_state != STATE_RUNNING) {
+    //! Helper to check if a whole-minute value is a scheduled horn minute (for color display).
+    private function _isScheduledHornMinute(remainingWholeMins as Number) as Boolean {
+        var raceStartMins = _raceEngine.getStartTimeSec() / 60;
+        var hornMins = [5, 4, 1] as Array<Number>;
+        if (remainingWholeMins >= raceStartMins) {
             return false;
         }
-        var e = raceElapsedSec();
-        while (_lastFiredRaceElapsed < e) {
-            _lastFiredRaceElapsed++;
-            var rem = _startTime - _lastFiredRaceElapsed;
-            triggerHaptics(rem);
-            if (rem <= 0) {
-                _syncMode = false;
-                stopTimerInternal();
-                _state = STATE_FINISHED;
-                _count1 = e;
-                freezeStopwatchOnRaceEnd();
-                WatchUi.requestUpdate();
-                return true;
-            }
-        }
-        _count1 = e;
-        return false;
-    }
-
-    private function _raceStartWholeMins() as Number {
-        return _startTime / 60;
-    }
-
-    //! True if `rm` is a scheduled major-horn minute mark and is before the configured start length.
-    private function _hornAppliesToWholeMinute(rm as Number) as Boolean {
-        if (rm >= _raceStartWholeMins()) {
-            return false;
-        }
-        for (var i = 0; i < _scheduleHornMins.size(); i++) {
-            if (_scheduleHornMins[i] == rm) {
+        for (var i = 0; i < hornMins.size(); i++) {
+            if (hornMins[i] == remainingWholeMins) {
                 return true;
             }
         }
         return false;
     }
 
-    private function _isFinalCountdownTick(remaining as Number) as Boolean {
-        var sm = _raceStartWholeMins();
-        for (var i = 0; i < _scheduleFinalTicks.size(); i++) {
-            var tick = _scheduleFinalTicks[i] as Number;
-            // Before start gun (0:00)
-            if (tick == remaining) {
-                return true;
-            }
-            // Before each scheduled horn minute
-            for (var j = 0; j < _scheduleHornMins.size(); j++) {
-                var m = _scheduleHornMins[j] as Number;
-                if (m < sm and m * 60 + tick == remaining) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    //! True in the 10 s window before a scheduled major horn (same rule as sync for those horns).
-    private function _inTenSecWindowBeforeScheduledHorn(remaining as Number) as Boolean {
-        var sm = _raceStartWholeMins();
-        for (var i = 0; i < _scheduleHornMins.size(); i++) {
-            var m = _scheduleHornMins[i] as Number;
-            if (m < sm) {
-                var t = m * 60;
-                if (remaining >= t and remaining <= t + 10) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    //! Largest scheduled horn (seconds remaining) with hornTime <= R0; includes 0 for start gun.
-    private function maxSignalNotAbove(R0 as Number) as Number {
-        var best = -1;
-        var sm = _raceStartWholeMins();
-        for (var i = 0; i < _scheduleHornMins.size(); i++) {
-            var m = _scheduleHornMins[i] as Number;
-            var t = m * 60;
-            if (m < sm and t <= R0 and t > best) {
-                best = t;
-            }
-        }
-        if (R0 >= 0 and 0 > best) {
-            best = 0;
-        }
-        return best;
-    }
-
-    private function triggerHaptics(remaining as Number) as Void {
-        //! Vibrates only while this app is running; Garmin does not allow Attention in true background services.
-        if (remaining <= 10 and Attention has :backlight) {
-            Attention.backlight(true);
-        }
-        if (!(Attention has :vibrate)) { return; }
-        if (remaining == 0) {
-            // Start gun: double long burst
-            Attention.vibrate([
-                new Attention.VibeProfile(100, 800),
-                new Attention.VibeProfile(0,   300),
-                new Attention.VibeProfile(100, 800)
-            ] as Array<Attention.VibeProfile>);
-        } else if (remaining % 60 == 0 and _hornAppliesToWholeMinute(remaining / 60)) {
-            // Signal gun at a warning minute: long burst
-            Attention.vibrate([new Attention.VibeProfile(100, 800)] as Array<Attention.VibeProfile>);
-        } else if (_isFinalCountdownTick(remaining)) {
-            // Final countdown ticks: short burst
-            Attention.vibrate([new Attention.VibeProfile(100, 150)] as Array<Attention.VibeProfile>);
-        }
-    }
-
-    // --- Public interface for delegate ---
+    // =========================================================================
+    // Public interface for Delegate
+    // =========================================================================
 
     public function isRunning() as Boolean {
-        return _state == STATE_RUNNING;
+        return _raceEngine.getState() == RaceEngine.STATE_RUNNING;
     }
 
-    //! True in a 10 s window before a scheduled major horn or in the final 10 s — only time sync is allowed.
-    public function isInSyncWindow() as Boolean {
-        if (_state != STATE_RUNNING) { return false; }
-        var remaining = raceRemaining();
-        if (_inTenSecWindowBeforeScheduledHorn(remaining)) {
-            return true;
-        }
-        return remaining >= 0 and remaining <= 10;
+    public function hasActiveSession() as Boolean {
+        return _activityMgr.hasSession();
     }
 
-    //! Call on physical start key down in sync window — anchors snap-on-release to this tick.
-    public function recordSyncPressAnchor() as Void {
-        _syncPressCount = raceElapsedSec();
-    }
-
-    //! Long-press confirmed: same countdown as normal, drawn in green until release or cancel.
-    //! @return false if not in a sync window (delegate should not treat as active).
-    public function enterSyncMode() as Boolean {
-        if (!isInSyncWindow()) {
-            return false;
-        }
-        _syncMode = true;
-        WatchUi.requestUpdate();
-        return true;
-    }
-
-    //! SELECT released (not canceled): snap to one second after the latest horn not after
-    //! remaining-at-press (always uses _syncPressCount from key-down, not current time).
-    public function finishSyncHoldRelease() as Void {
-        if (!_syncMode) {
-            return;
-        }
-        var R0 = _startTime - _syncPressCount;
-        var H = maxSignalNotAbove(R0);
-        _syncMode = false;
-        if (H < 0) {
-            WatchUi.requestUpdate();
-            return;
-        }
-        if (H <= 0) {
-            _count1 = _startTime;
-            _lastFiredRaceElapsed = _startTime;
-            stopTimerInternal();
-            _state = STATE_FINISHED;
-            freezeStopwatchOnRaceEnd();
-            triggerHaptics(0);
-        } else {
-            _count1 = _startTime - (H - 1);
-            _raceAnchorMs = System.getTimer() - _count1 * 1000;
-            _lastFiredRaceElapsed = _count1;
-        }
-        WatchUi.requestUpdate();
-    }
-
-    //! DOWN during hold-sync: keep current time; exit green overlay (normal colors/rules).
-    public function cancelSyncMode() as Void {
-        _syncMode = false;
-        WatchUi.requestUpdate();
-    }
-
-    //! Called by the time-select menu when the user picks a new start time
-    public function setStartTime(seconds as Number) as Void {
-        _startTime = seconds;
+    public function cycleRacingPage() as Void {
+        _racingPage = (_racingPage + 1) % 2;
         WatchUi.requestUpdate();
     }
 
     public function onPrimaryAction() as Void {
-        if (_state == STATE_READY) {
-            resetStopwatchForRace();
-            _count1 = 0;
-            _raceAnchorMs = System.getTimer();
-            _lastFiredRaceElapsed = 0;
-            var timer1 = new Timer.Timer();
-            timer1.start(method(:callback), 1000, true);
-            _timer1 = timer1;
-            _state = STATE_RUNNING;
+        _resetIdleTimeout();
+        if (_raceEngine.getState() == RaceEngine.STATE_READY) {
+            _stopwatch.reset();
+            _raceEngine.start();
+            _startRaceTimer();
             WatchUi.requestUpdate();
-        } else if (_state == STATE_FINISHED) {
-            resetStopwatchForRace();
-            _count1 = 0;
-            _state = STATE_READY;
+        } else if (_raceEngine.getState() == RaceEngine.STATE_FINISHED) {
+            _activityMgr.discardSession();
+            _stopwatch.reset();
+            _raceEngine.reset();
             WatchUi.requestUpdate();
         }
     }
 
     public function handleBack() as Boolean {
-        if (_state == STATE_RUNNING) {
+        _resetIdleTimeout();
+        var state = _raceEngine.getState();
+        if (state == RaceEngine.STATE_RUNNING) {
             return true;  // block back during race
-        } else if (_state == STATE_FINISHED) {
-            resetStopwatchForRace();
-            _count1 = 0;
-            _state = STATE_READY;
+        } else if (state == RaceEngine.STATE_FINISHED) {
+            _stopwatch.reset();
+            _raceEngine.reset();
             WatchUi.requestUpdate();
             return true;
         }
-        return false;  // READY: let framework exit the app normally
+        return false;  // READY: let framework exit normally
     }
 
     public function handleMenu() as Void {
-        if (_state == STATE_READY) {
+        _resetIdleTimeout();
+        var state = _raceEngine.getState();
+        if (state == RaceEngine.STATE_READY) {
             var menu = new WatchUi.Menu2({:title => "Start Time"});
             menu.addItem(new WatchUi.MenuItem("5:00", null, 300, null));
             menu.addItem(new WatchUi.MenuItem("4:00", null, 240, null));
             menu.addItem(new WatchUi.MenuItem("3:00", null, 180, null));
             menu.addItem(new WatchUi.MenuItem("2:00", null, 120, null));
             menu.addItem(new WatchUi.MenuItem("1:00", null, 60, null));
-            WatchUi.pushView(menu, new Tuesday_Night_TimerMenuDelegate(method(:setStartTime)), WatchUi.SLIDE_UP);
-        } else if (_state == STATE_RUNNING) {
-            if (_syncMode) {
-                _syncMode = false;
-            }
-            stopTimerInternal();
-            resetStopwatchForRace();
-            _count1 = 0;
-            _state = STATE_READY;
+            WatchUi.pushView(menu, new Tuesday_Night_TimerMenuDelegate(method(:_onStartTimeSelected)), WatchUi.SLIDE_UP);
+        } else if (state == RaceEngine.STATE_RUNNING) {
+            _stopRaceTimer();
+            _raceEngine.cancelSync();
+            _stopwatch.reset();
+            _raceEngine.reset();
             WatchUi.requestUpdate();
-        } else if (_state == STATE_FINISHED) {
-            resetStopwatchForRace();
-            _count1 = 0;
-            _state = STATE_READY;
+        } else if (state == RaceEngine.STATE_FINISHED) {
+            _activityMgr.discardSession();
+            _stopwatch.reset();
+            _raceEngine.reset();
             WatchUi.requestUpdate();
         }
     }
 
     public function stopTimer() as Void {
-        _syncMode = false;
-        stopTimerInternal();
-        _state = STATE_FINISHED;
-        freezeStopwatchOnRaceEnd();
+        _resetIdleTimeout();
+        _raceEngine.cancelSync();
+        _stopRaceTimer();
+        _raceEngine.finishRaceNow();
+        _stopwatch.freeze();
+        _activityMgr.startSession();
         WatchUi.requestUpdate();
     }
 
-    private function stopMainRaceTicker() as Void {
-        if (_timer1 != null) {
-            _timer1.stop();
-            _timer1 = null;
+    public function recordSyncPressAnchor() as Void {
+        _raceEngine.recordSyncPressAnchor();
+    }
+
+    public function enterSyncMode() as Boolean {
+        if (!_raceEngine.enterSyncMode()) {
+            return false;
         }
+        WatchUi.requestUpdate();
+        return true;
     }
 
-    private function stopTimerInternal() as Void {
-        stopMainRaceTicker();
-    }
-
-    private function resetStopwatchForRace() as Void {
-        stopStopwatchUiTimer();
-        _raceAnchorMs = 0;
-        _lastFiredRaceElapsed = 0;
-        _swState = SW_IDLE;
-        _swElapsedMs = 0;
-        _swSegmentStartMs = 0;
-        _swLastCycleMs = 0;
-    }
-
-    private function freezeStopwatchOnRaceEnd() as Void {
-        if (_swState == SW_RUNNING) {
-            _swElapsedMs += System.getTimer() - _swSegmentStartMs;
-            _swState = SW_PAUSED;
+    public function finishSyncHoldRelease() as Void {
+        _resetIdleTimeout();
+        if (!_raceEngine.isInSyncMode()) {
+            return;
         }
-        stopStopwatchUiTimer();
+        _raceEngine.finishSync();
+        WatchUi.requestUpdate();
     }
 
-    //! Start / stop / reset cycle — only call from delegate on short SELECT or touch tap while running.
+    public function cancelSyncMode() as Void {
+        _resetIdleTimeout();
+        _raceEngine.cancelSync();
+        WatchUi.requestUpdate();
+    }
+
     public function cycleStopwatch() as Void {
-        var now = System.getTimer();
-        if (_swLastCycleMs != 0 and (now - _swLastCycleMs) < SW_CYCLE_DEBOUNCE_MS) {
-            return;
-        }
-        _swLastCycleMs = now;
-        if (_swState == SW_IDLE) {
-            _swElapsedMs = 0;
-            _swSegmentStartMs = System.getTimer();
-            _swState = SW_RUNNING;
-            startStopwatchUiTimer();
-        } else if (_swState == SW_RUNNING) {
-            _swElapsedMs += System.getTimer() - _swSegmentStartMs;
-            _swState = SW_PAUSED;
-            stopStopwatchUiTimer();
-        } else {
-            _swElapsedMs = 0;
-            _swState = SW_IDLE;
-            stopStopwatchUiTimer();
-        }
+        _resetIdleTimeout();
+        _stopwatch.cycle();
         WatchUi.requestUpdate();
     }
 
-    //! ~10 Hz while the stopwatch runs so M:SS:CS updates smoothly.
-    public function onStopwatchUiTick() as Void {
-        if (_swState != SW_RUNNING) {
-            return;
-        }
+    public function saveActivitySession() as Void {
+        _activityMgr.saveSession();
+    }
+
+    public function discardSession() as Void {
+        _activityMgr.discardSession();
+    }
+
+    public function exitAppNow() as Void {
+        _cleanupAndExit();
+    }
+
+    public function isInSyncWindow() as Boolean {
+        return _raceEngine.isInSyncWindow();
+    }
+
+    public function setStartTime(seconds as Number) as Void {
+        _raceEngine.setStartTimeSec(seconds);
         WatchUi.requestUpdate();
     }
 
-    private function startStopwatchUiTimer() as Void {
-        stopStopwatchUiTimer();
+    // =========================================================================
+    // Private helpers
+    // =========================================================================
+
+    private function _onStartTimeSelected(sec as Number) as Void {
+        setStartTime(sec);
+    }
+
+    private function _onStateChange() as Void {
+        WatchUi.requestUpdate();
+    }
+
+    private function _startRaceTimer() as Void {
         var t = new Timer.Timer();
-        t.start(method(:onStopwatchUiTick), 100, true);
-        _swTimer = t;
+        t.start(method(:_onRaceTimerTick), 1000, true);
+        _raceTimer = t;
     }
 
-    private function stopStopwatchUiTimer() as Void {
-        if (_swTimer != null) {
-            _swTimer.stop();
-            _swTimer = null;
+    private function _stopRaceTimer() as Void {
+        if (_raceTimer != null) {
+            _raceTimer.stop();
+            _raceTimer = null;
         }
     }
 
+    private function _startRecIndicatorTimer() as Void {
+        _activityMgr.startSession();
+    }
+
+    private function _resetIdleTimeout() as Void {
+        _lastActivityMs = System.getTimer();
+        if (_idleTimer == null) {
+            _idleTimer = new Timer.Timer();
+            _idleTimer.start(method(:_onIdleCheck), 60000, true);
+        }
+    }
+
+    public function _onIdleCheck() as Void {
+        var now = System.getTimer();
+        if ((now - _lastActivityMs) > IDLE_TIMEOUT_MS) {
+            _cleanupAndExit();
+        }
+    }
+
+    private function _cleanupAndExit() as Void {
+        _stopRaceTimer();
+        _raceEngine.freezeRace();
+        _stopwatch.freeze();
+        _activityMgr.discardSession();
+        if (_idleTimer != null) {
+            _idleTimer.stop();
+            _idleTimer = null;
+        }
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+    }
 }

@@ -13,7 +13,7 @@ class Tuesday_Night_TimerConfirmDelegate extends WatchUi.Menu2InputDelegate {
     function onSelect(item as WatchUi.MenuItem) as Void {
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         if (item.getId() == :yes) {
-            _view.stopTimer();
+            _view.exitAppNow();
         }
         // :no — just pop, timer keeps running
     }
